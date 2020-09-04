@@ -38,8 +38,8 @@ class Mailer{
      * bcc_batch_size   200                 None                Number of emails in each BCC batch.
      * dsn              FALSE               TRUE|FALSE          Enable notify message from server
      * 
-     * from_email       No Default          None                If you want to set a from email value
-     * from_name        No Default          None                If you want to set a from name value
+     * from_email       No Default          None                “From” e-mail address
+     * from_name        No Default          None                “From” display name
      * prefix_subject   No Default          None                If you want to set a prefix for your subject
      */
     private $requiredConfigs = [
@@ -101,7 +101,7 @@ class Mailer{
     /**
      * To set a single email address step by step
      *
-     * @param string $input
+     * @param string $input Single email address or comma-delimited string of e-mail addresses
      * @return void
      * @throws Exception
      */
@@ -112,7 +112,7 @@ class Mailer{
     /**
      * To set multiple email addresses in one time
      *
-     * @param array $inputs
+     * @param array $inputs Array of email address or comma-delimited string of e-mail addresses
      * @return void
      * @throws Exception
      */
@@ -125,7 +125,7 @@ class Mailer{
     /**
      * To set a single email address in cc step by step
      *
-     * @param string $input
+     * @param string $input Single email address or comma-delimited string of e-mail addresses
      * @return void
      * @throws Exception
      */
@@ -136,7 +136,7 @@ class Mailer{
     /**
      * To set multiple email addresses in cc in one time
      *
-     * @param array $inputs
+     * @param array $inputs Array of email address or comma-delimited string of e-mail addresses
      * @return void
      * @throws Exception
      */
@@ -149,7 +149,7 @@ class Mailer{
     /**
      * To set a single email address in bcc step by step
      *
-     * @param string $input
+     * @param string $input Single email address or comma-delimited string of e-mail addresses
      * @return void
      * @throws Exception
      */
@@ -160,7 +160,7 @@ class Mailer{
     /**
      * To set multiple email addresses in bcc in one time
      *
-     * @param array $inputs
+     * @param array $inputs Array of email address or comma-delimited string of e-mail addresses
      * @return void
      * @throws Exception
      */
@@ -188,6 +188,16 @@ class Mailer{
      */
 	public function setMessage(string $message) {
 		$this->_ci->email->message($message);
+    }
+    
+    /**
+     * To set the alternative message (for html messagges)
+     *
+     * @param string $message
+     * @return void
+     */
+	public function setAltMessage(string $message) {
+		$this->_ci->email->set_alt_message($message);
 	}
 
     /**
@@ -225,6 +235,8 @@ class Mailer{
 	}
 
     public function send() {
+        $this->_ci->email->clear(TRUE);
+
         $this->setFullFrom();
 
         if(count($this->tos) == 0){
@@ -234,7 +246,7 @@ class Mailer{
 
         $this->setFullSubject();
         
-        $this->isSent = $this->_ci->email->send(TRUE);
+        $this->isSent = $this->_ci->email->send();
         return $this->isSent;
     }
 
