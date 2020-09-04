@@ -2,8 +2,6 @@
 
 namespace Schema31\CiMailer;
 
-use CodiceFiscale\Subject;
-
 /**
  * Classe mailer per CodeIgniter 3.1.11. Permette di prendere le configurazioni da file
  * posto in application/config/email.php oppure con un array di configurazioni da passare 
@@ -58,6 +56,8 @@ class Mailer{
     private $fromName = '';
     private $prefixSubject = '';
     private $tos = [];
+    private $ccs = [];
+    private $bccs = [];
     private $subject = '';
 
     public function __construct($configs = []) {
@@ -101,26 +101,72 @@ class Mailer{
     /**
      * To set a single email address step by step
      *
-     * @param string $to
+     * @param string $input
      * @return void
      * @throws Exception
      */
-    public function setSingleTo(string $to){
-        $this->validateEmailAddress($to);
-        $this->tos[] = $to;
+    public function setSingleTo(string $input){
+        $this->setSingleEmailAddress($input, $this->tos);
     }
 
     /**
      * To set multiple email addresses in one time
      *
-     * @param array $tos
+     * @param array $inputs
      * @return void
      * @throws Exception
      */
-    public function setMultipleTo(array $tos){
-        foreach ($tos as $to) {
-            $this->validateEmailAddress($to);
-            $this->tos[] = $to;
+    public function setMultipleTo(array $inputs){
+        foreach ($inputs as $input) {
+            $this->setSingleTo($input);
+        }
+    }
+
+    /**
+     * To set a single email address in cc step by step
+     *
+     * @param string $input
+     * @return void
+     * @throws Exception
+     */
+    public function setSingleCc(string $input){
+        $this->setSingleEmailAddress($input, $this->ccs);
+    }
+
+    /**
+     * To set multiple email addresses in cc in one time
+     *
+     * @param array $inputs
+     * @return void
+     * @throws Exception
+     */
+    public function setMultipleCc(array $inputs){
+        foreach ($inputs as $input) {
+            $this->setSingleCc($input);
+        }
+    }
+
+    /**
+     * To set a single email address in bcc step by step
+     *
+     * @param string $input
+     * @return void
+     * @throws Exception
+     */
+    public function setSingleBcc(string $input){
+        $this->setSingleEmailAddress($input, $this->bccs);
+    }
+
+    /**
+     * To set multiple email addresses in bcc in one time
+     *
+     * @param array $inputs
+     * @return void
+     * @throws Exception
+     */
+    public function setMultipleBcc(array $inputs){
+        foreach ($inputs as $input) {
+            $this->setSingleBcc($input);
         }
     }
 
@@ -203,10 +249,10 @@ class Mailer{
      */
     private function setFullFrom(){
 		$from_email = $this->configFromFile ? strtolower(trim(config_item('from_email'))) : $this->fromEmail;
-		$from_name = $this->configFromFile ? strtolower(trim(config_item('from_name'))) : $this->fromName;
+		$from_name = $this->configFromFile ? trim(config_item('from_name')) : $this->fromName;
 		
 		if (is_string($from_email)) {
-            $this->_ci->email->from($from_email, !is_string($from_name) ? $from_name : '');
+            $this->_ci->email->from($from_email, is_string($from_name) ? $from_name : '');
         }
     }
 
@@ -222,7 +268,21 @@ class Mailer{
     private function setFullSubject() {
         $prefix_subject = $this->configFromFile ? trim(config_item('prefix_subject')) : $this->prefixSubject;
         $this->_ci->email->subject($prefix_subject . $this->subject);
-	}
+    }
+    
+    /**
+     * To set a single email address step by step
+     *
+     * @param string $email the email address
+     * @param array $whereToStore $this->tos|$this->ccs|$this->
+     * @return void
+     */
+    private function setSingleEmailAddress(string $email, array $whereToStore){
+        foreach (explode(",", $email) as $singleEmail) {
+            $this->validateEmailAddress(strtolower(trim($singleEmail)));
+            $whereToStore[] = strtolower(trim($singleEmail));
+        }
+    }
     
     /**
      * For validate email address usinf the filter_var function
