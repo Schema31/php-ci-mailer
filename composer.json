@@ -1,0 +1,16 @@
+{
+    "name": "schema31/php-ci-mailer",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Gabriele Orlando",
+            "email": "gorlando@schema31.it"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Schema31\\CiMailer\\": "src/"
+        }
+    }
+}
