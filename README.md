@@ -105,5 +105,4 @@ $mailer
 ->send(); //returns true if the email is sent, false otherwise.
 ```
 
-
 [link-packagist]: https://packagist.org/packages/schema31/php-ci-mailer
