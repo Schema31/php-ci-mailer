@@ -5,7 +5,6 @@
 
 Mailer for CodeIgniter.
 
-
 Install
 -------
 
