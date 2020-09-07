@@ -22,7 +22,7 @@ How to use
 Here the list of all configuration attributes supported:
 
 |Preference       |Default Value       |Options             |Description|
-|-----------------|--------------------|--------------------|Description|
+|-----------------|--------------------|--------------------|-----------|
 |useragent        |CodeIgniter         |None                |The “user agent”.|
 |protocol         |mail                |mail|sendmail|smtp  |The mail sending protocol.|
 |mailpath         |/usr/sbin/sendmail  |None                |The server path to Sendmail.|
