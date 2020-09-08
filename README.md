@@ -55,9 +55,9 @@ You can use an array of configurations:
 ```php
 $config = [];
 $config['protocol'] = 'smtp';// mail, sendmail, smtp
-$config['smtp_host'] = 'smtp.schema31.it';// SMTP Server Address.
-$config['smtp_user'] = 'noreply@oneprofile.it';// SMTP Username.
-$config['smtp_pass'] = 'qw35bb99d';// SMTP Password.
+$config['smtp_host'] = 'smtp_host';// SMTP Server Address.
+$config['smtp_user'] = 'smtp_user';// SMTP Username.
+$config['smtp_pass'] = 'smtp_pass';// SMTP Password.
 $config['smtp_port'] = '25';// SMTP Port.
 $config['mailtype'] = 'html';// text or html
 $config['smtp_timeout'] = '30';// SMTP Timeout (in seconds).
